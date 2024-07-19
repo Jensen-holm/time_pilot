@@ -1,27 +1,23 @@
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'sprite_loader.dart';
+import 'package:time_pilot/sprites/explosion.dart';
+import 'sprites/player.dart';
 
 void main() {
   runApp(GameWidget(game: TimePilot()));
 }
 
 class TimePilot extends FlameGame {
-  late SpriteAnimationComponent player;
-  late SpriteLoader spriteLoader;
+  late Player player;
+  late Explosion explosion;
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    explosion = Explosion();
+    add(explosion);
 
-    // Initialize the SpriteLoader with the current game instance
-    spriteLoader = SpriteLoader(this);
-
-    // Load the player sprite using the SpriteLoader
-    player = await spriteLoader.loadPlayerSprite();
-
-    // Add the player component to the game
+    player = Player();
     add(player);
   }
 }
