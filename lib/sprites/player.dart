@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:time_pilot/sprites/custom_sprite.dart';
 
 enum Direction {
-  // ignore: unused_field
   _, // ignoring warnings for this line because we want to start enum at 1
   n,
   nne,
@@ -23,7 +22,7 @@ enum Direction {
 }
 
 class Player extends CustomSprite {
-  late Map<Direction, SpriteAnimation> animations;
+  int curDirection = Direction.e.index; // initialize east
 
   Player()
       : super(
@@ -32,25 +31,41 @@ class Player extends CustomSprite {
         );
 
   @override
-  Future<SpriteAnimationComponent> loadSprite() async {
+  void loadSprite() {
+    // this function is called in the CustomSprite.onLoad() method
     loadAnimations();
-    return SpriteAnimationComponent()
+    sprite
       ..size = spriteSize
-      ..animation = animations[Direction.e]
+      ..animation = animations[curDirection] // initializes at east
       ..anchor = Anchor.center
       ..position = game.size / 2; // works because HasGameRef
   }
 
   void loadAnimations() {
-    animations = {};
     for (var idx = 1; idx < Direction.values.length; idx++) {
       var direction = Direction.values[idx];
-      animations[direction] = sheet.createAnimation(
+      animations[direction.index] = sheet.createAnimation(
         row: 0,
-        stepTime: 0.1,
+        stepTime: 1,
         from: idx - 1,
         to: idx,
       );
     }
+  }
+
+  void rotate(int steps) {
+    curDirection = (curDirection + steps) % Direction.values.length;
+    if (curDirection == 0) {
+      curDirection = 1; // Skip the unused enum value
+    }
+    sprite.animation = animations[curDirection];
+  }
+
+  void setDirection(int newDirection) {
+    curDirection = newDirection % Direction.values.length;
+    if (curDirection == 0) {
+      curDirection = 1; // Skip the unused enum value
+    }
+    sprite.animation = animations[curDirection];
   }
 }

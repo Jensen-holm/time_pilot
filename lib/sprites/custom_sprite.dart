@@ -12,20 +12,22 @@ abstract class CustomSprite extends SpriteAnimationComponent with HasGameRef {
   }) : super();
 
   late SpriteSheet sheet;
-  late SpriteAnimationComponent sprite;
+  SpriteAnimationComponent sprite = SpriteAnimationComponent();
+  Map<int, SpriteAnimation> animations = {};
 
   // Abstract method to be implemented by subclasses
-  Future<SpriteAnimationComponent> loadSprite();
+  // this will set attributes to the sprite attribute
+  void loadSprite();
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sheet = await loadSpriteSheet();
-    sprite = await loadSprite();
+    sheet = await _loadSpriteSheet();
+    loadSprite();
     add(sprite);
   }
 
-  Future<SpriteSheet> loadSpriteSheet() async {
+  Future<SpriteSheet> _loadSpriteSheet() async {
     return SpriteSheet(
       image: await game.images.load(spritePath),
       srcSize: spriteSize,
