@@ -23,10 +23,7 @@ enum Direction {
 }
 
 class Player extends CustomSprite {
-  late SpriteAnimation north;
-  late SpriteAnimation south;
-  late SpriteAnimation east;
-  late SpriteAnimation west;
+  late Map<Direction, SpriteAnimation> animations;
 
   Player()
       : super(
@@ -39,37 +36,22 @@ class Player extends CustomSprite {
     loadAnimations();
     return SpriteAnimationComponent()
       ..size = spriteSize
-      ..animation = east
+      ..animation = animations[Direction.e]
       ..anchor = Anchor.center
       ..position = game.size / 2; // works because HasGameRef
   }
 
   void loadAnimations() {
-    north = sheet.createAnimation(
-      row: 0,
-      stepTime: 0.1,
-      to: Direction.n.index,
-    );
-
-    south = sheet.createAnimation(
-      row: 0,
-      stepTime: 0.1,
-      from: Direction.s.index - 1,
-      to: Direction.s.index,
-    );
-
-    east = sheet.createAnimation(
-      row: 0,
-      stepTime: 0.1,
-      from: Direction.e.index - 1,
-      to: Direction.e.index,
-    );
-
-    west = sheet.createAnimation(
-      row: 0,
-      stepTime: 0.1,
-      from: Direction.w.index - 1,
-      to: Direction.w.index,
-    );
+    animations = {};
+    const directions = Direction.values;
+    for (var idx = 1; idx < directions.length; idx++) {
+      var direction = directions[idx];
+      animations[direction] = sheet.createAnimation(
+        row: 0,
+        stepTime: 0.1,
+        from: idx - 1,
+        to: idx,
+      );
+    }
   }
 }
