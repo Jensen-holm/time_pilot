@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'sprites/player.dart';
+import 'dart:math';
 
 void main() {
   runApp(GameWidget(game: TimePilot()));
@@ -10,7 +11,7 @@ void main() {
 class TimePilot extends FlameGame with HasGameRef {
   Player player = Player();
   double timeAccumulator = 0.0;
-  final double rotationInterval = 0.1; // Rotate every 1 second
+  final double rotationInterval = 0.1; // Rotate slightly every 0.1 seconds
 
   @override
   Future<void> onLoad() async {
@@ -23,7 +24,8 @@ class TimePilot extends FlameGame with HasGameRef {
     super.update(dt);
     timeAccumulator += dt;
     if (timeAccumulator >= rotationInterval) {
-      player.rotate(1); // Rotate by 1 step
+      int randomDir = Random().nextInt(14) + 1;
+      player.rotateToDirection(randomDir); // Rotate by 1 step
       timeAccumulator = 0.0; // Reset the accumulator
     }
   }
