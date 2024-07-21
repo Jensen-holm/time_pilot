@@ -43,9 +43,8 @@ class Player extends CustomSprite {
 
   void loadAnimations() {
     animations = {};
-    const directions = Direction.values;
-    for (var idx = 1; idx < directions.length; idx++) {
-      var direction = directions[idx];
+    for (var idx = 1; idx < Direction.values.length; idx++) {
+      var direction = Direction.values[idx];
       animations[direction] = sheet.createAnimation(
         row: 0,
         stepTime: 0.1,
