@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:time_pilot/sprites/custom_sprite.dart';
-import 'dart:io';
 
 enum Direction {
   _, // ignoring warnings for this line because we want to start enum at 1
